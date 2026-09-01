@@ -60,8 +60,8 @@ and the plain-Playwright path stops working, switching engines is a one-line
 change:
 
 ```bash
-scrapy crawl busca -a termo=nivea                       # default: plain Playwright
-SCRAPER_BROWSER_ENGINE=camoufox scrapy crawl busca -a termo=nivea  # fallback: Camoufox
+scrapy crawl brand -a term=nivea                       # default: plain Playwright
+SCRAPER_BROWSER_ENGINE=camoufox scrapy crawl brand -a term=nivea  # fallback: Camoufox
 ```
 
 Using Camoufox requires `pip install camoufox` and `python -m camoufox
@@ -71,7 +71,7 @@ fetch` (downloads its browser build, ~90MB); it is commented out in
 ## Architecture
 
 ```text
-busca.py (Scrapy spider) ── search-result parsing, star/brand filter, pagination
+brand.py (Scrapy spider) ── search-result parsing, star/brand filter, pagination
     │                       product-detail parsing (title, price, seller, factsheet)
     ▼
 scrapy-playwright ── routes requests through a real browser instead of
@@ -117,7 +117,7 @@ happens inside a spider callback.
 ## Running it
 
 ```bash
-scrapy crawl busca -a termo=nivea -a max_pages=3 -o outputs/nivea.csv
+scrapy crawl brand -a term=nivea -a max_pages=3 -o outputs/nivea.csv
 ```
 
 `outputs/` is where CSV runs are saved locally; it is not committed to this
@@ -125,9 +125,13 @@ repository (see `.gitignore`) so real scraped data never gets published here.
 Example output (synthetic data, not a real scrape):
 
 ```csv
-termo_busca,titulo,vendido_por,preco_normal,preco_pix,estrelas,avaliacoes,marca,referencia,linha,modelo,quantidade,url
-nivea,EXAMPLE Nivea Moisturizing Cream 200ml,Sold by Example Store and delivered by Magalu,29.9,26.9,4.8,120,Nivea,0000000000000,Moisturizing,Example 200ml,1 unit,https://www.magazineluiza.com.br/example-product/p/example123/
+search_term,title,sold_by,regular_price,pix_price,rating,review_count,brand,reference,line,model,quantity,url
+nivea,Creme Hidratante Nivea EXEMPLO 200ml,Vendido por Loja Exemplo e entregue por Magalu,29.9,26.9,4.8,120,Nivea,0000000000000,Hidratante,Exemplo 200ml,1 unidade,https://www.magazineluiza.com.br/produto-exemplo/p/exemplo123/
 ```
+
+Column names are in English; the values keep the source site's own
+Portuguese (product titles, the "Vendido por X e entregue por Y" seller
+text), since this is Brazilian marketplace data.
 
 ---
 
@@ -191,8 +195,8 @@ o Akamai reforçar as checagens e o caminho com Playwright puro parar de
 funcionar, trocar de engine é uma mudança de uma linha:
 
 ```bash
-scrapy crawl busca -a termo=nivea                       # padrao: Playwright puro
-SCRAPER_BROWSER_ENGINE=camoufox scrapy crawl busca -a termo=nivea  # alternativa: Camoufox
+scrapy crawl brand -a term=nivea                       # padrao: Playwright puro
+SCRAPER_BROWSER_ENGINE=camoufox scrapy crawl brand -a term=nivea  # alternativa: Camoufox
 ```
 
 Usar o Camoufox exige `pip install camoufox` e `python -m camoufox fetch`
@@ -202,7 +206,7 @@ Usar o Camoufox exige `pip install camoufox` e `python -m camoufox fetch`
 ## Arquitetura
 
 ```text
-busca.py (spider Scrapy) ── parsing dos resultados de busca, filtro de estrela/marca, paginacao
+brand.py (spider Scrapy) ── parsing dos resultados de busca, filtro de estrela/marca, paginacao
     │                       parsing da pagina de produto (titulo, preco, vendedor, ficha tecnica)
     ▼
 scrapy-playwright ── roteia as requisicoes por um navegador real em vez do
@@ -249,7 +253,7 @@ um callback do spider.
 ## Executando
 
 ```bash
-scrapy crawl busca -a termo=nivea -a max_pages=3 -o outputs/nivea.csv
+scrapy crawl brand -a term=nivea -a max_pages=3 -o outputs/nivea.csv
 ```
 
 `outputs/` é onde os CSVs de cada execução ficam salvos localmente; a pasta
@@ -258,6 +262,10 @@ coletado nunca é publicado aqui. Exemplo de saída (dado sintético, não é um
 coleta real):
 
 ```csv
-termo_busca,titulo,vendido_por,preco_normal,preco_pix,estrelas,avaliacoes,marca,referencia,linha,modelo,quantidade,url
+search_term,title,sold_by,regular_price,pix_price,rating,review_count,brand,reference,line,model,quantity,url
 nivea,Creme Hidratante Nivea EXEMPLO 200ml,Vendido por Loja Exemplo e entregue por Magalu,29.9,26.9,4.8,120,Nivea,0000000000000,Hidratante,Exemplo 200ml,1 unidade,https://www.magazineluiza.com.br/produto-exemplo/p/exemplo123/
 ```
+
+Os nomes das colunas ficam em inglês; os valores mantêm o português do
+próprio site (título do produto, o texto "Vendido por X e entregue por Y"),
+já que é dado de marketplace brasileiro.

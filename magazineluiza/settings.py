@@ -5,13 +5,13 @@ BOT_NAME = "magazineluiza"
 SPIDER_MODULES = ["magazineluiza.spiders"]
 NEWSPIDER_MODULE = "magazineluiza.spiders"
 
-# robots.txt tambem retorna 403 do Akamai -- nao e uma regra de disallow real
+# robots.txt also returns a 403 from Akamai -- not a real disallow rule
 ROBOTSTXT_OBEY = False
 
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
-DOWNLOAD_DELAY = 4  # 2s levava a bloqueio apos ~35 paginas seguidas (~21 req/min)
+DOWNLOAD_DELAY = 4  # 2s consistently triggered a block after ~35 pages (~21 req/min)
 
-# Scrapy + Playwright: ver README.md
+# Scrapy + Playwright: see README.md
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
@@ -20,7 +20,7 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
 PLAYWRIGHT_BROWSER_TYPE = "firefox"
 
-# playwright (padrao, sem dependencia extra) ou camoufox (mais pesado, mais resiliente)
+# playwright (default, no extra dependency) or camoufox (heavier, more resilient)
 SCRAPER_BROWSER_ENGINE = os.environ.get("SCRAPER_BROWSER_ENGINE", "playwright")
 
 if SCRAPER_BROWSER_ENGINE == "camoufox":
@@ -31,8 +31,8 @@ if SCRAPER_BROWSER_ENGINE == "camoufox":
         humanize=True,
         os=["macos", "windows"],
         enable_cache=True,
-        # block_images=True foi testado e removido: o proprio Camoufox avisa
-        # que bloquear imagem e um sinal de bot pra WAFs como o Akamai.
+        # block_images=True was tried and dropped: Camoufox itself warns
+        # that blocking images is a known bot signal on major WAFs.
     )
     PLAYWRIGHT_CONTEXTS = {}
 else:
@@ -53,6 +53,6 @@ else:
     }
 
 PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 30_000
-PLAYWRIGHT_PROCESS_REQUEST_HEADERS = None  # nao repassar o User-Agent do Scrapy pro navegador
+PLAYWRIGHT_PROCESS_REQUEST_HEADERS = None  # don't forward Scrapy's User-Agent to the browser
 
 FEED_EXPORT_ENCODING = "utf-8"
