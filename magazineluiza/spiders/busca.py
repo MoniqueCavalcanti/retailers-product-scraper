@@ -16,7 +16,7 @@ def extrair_next_data(response):
 
 
 def montar_request_busca(termo, pagina, callback):
-    url = f"https://www.magazineluiza.com.br/busca/{termo}/"
+    url = f"https://www.magazineluiza.com.br/marcas/{termo}/"
     if pagina > 1:
         url += f"?page={pagina}"
     return scrapy.Request(
@@ -73,7 +73,7 @@ class BuscaSpider(scrapy.Spider):
 
     def parse_busca(self, response, pagina):
         data = extrair_next_data(response)
-        busca = data["props"]["pageProps"]["data"]["search"]
+        busca = data["props"]["pageProps"]["data"]["brand"]  # "brand" na pagina de marca, era "search" na de busca
 
         relevantes = [
             item for item in busca["items"]

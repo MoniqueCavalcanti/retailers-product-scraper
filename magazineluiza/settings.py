@@ -9,7 +9,7 @@ NEWSPIDER_MODULE = "magazineluiza.spiders"
 ROBOTSTXT_OBEY = False
 
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 4  # 2s levava a bloqueio apos ~35 paginas seguidas (~21 req/min)
 
 # Scrapy + Playwright: ver README.md
 DOWNLOAD_HANDLERS = {
@@ -30,6 +30,9 @@ if SCRAPER_BROWSER_ENGINE == "camoufox":
         headless=True,
         humanize=True,
         os=["macos", "windows"],
+        enable_cache=True,
+        # block_images=True foi testado e removido: o proprio Camoufox avisa
+        # que bloquear imagem e um sinal de bot pra WAFs como o Akamai.
     )
     PLAYWRIGHT_CONTEXTS = {}
 else:
