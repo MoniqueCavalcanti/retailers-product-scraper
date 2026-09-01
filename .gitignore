@@ -4,6 +4,7 @@ __pycache__/
 
 data/
 outputs/*.csv
+docs/
 
 .env
 .local.env
