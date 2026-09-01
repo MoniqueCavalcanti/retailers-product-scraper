@@ -55,6 +55,11 @@ def seller_text(product_data):
     return seller.get("name") or "Terceiro"
 
 
+def main_image_url(product_data):
+    gallery = product_data.get("mediaGallery") or []
+    return gallery[0].get("file", "") if gallery else ""
+
+
 def build_listing_request(category, brand, page, callback):
     url = f"https://www.drogasil.com.br/{category}.html?p={page}&facets=filters.Marca%3A{quote(brand)}"
     return scrapy.Request(
@@ -113,6 +118,8 @@ class BrandSpider(scrapy.Spider):
         price_aux = product_data.get("price_aux") or {}
         live_price = ((product_data.get("liveComposition") or {}).get("livePrice") or {})
 
+        weight_kg = custom_attribute(product_data, "pesokg")
+
         yield ProductItem(
             search_term=self.brand,
             title=product_data.get("name", ""),
@@ -120,6 +127,13 @@ class BrandSpider(scrapy.Spider):
             brand=custom_attribute(product_data, "marca"),
             manufacturer=custom_attribute(product_data, "fabricante"),
             quantity=custom_attribute(product_data, "quantidade"),
+            ean=custom_attribute(product_data, "ean") or str(product_data.get("productEan") or ""),
+            sku=str(product_data.get("sku") or ""),
+            category=custom_attribute(product_data, "grupo"),
+            subcategory=custom_attribute(product_data, "subgruponome"),
+            tarja=custom_attribute(product_data, "descricaotarja"),
+            weight_kg=float(weight_kg) if weight_kg else None,
+            image_url=main_image_url(product_data),
             regular_price=price_aux.get("value_from"),
             sale_price=price_aux.get("value_to"),
             pix_price=live_price.get("pixPrice"),

@@ -24,7 +24,10 @@ and CSV export are built and tested (19 items, 0 errors on a small run).
 - **Pricing and product data** come from `productData` (`price_aux.value_from`
   /`value_to`, `liveComposition.livePrice.pixPrice`, and a flat
   `custom_attributes` list keyed by `attribute_code` -- e.g. `marca`,
-  `fabricante`, `quantidade`).
+  `fabricante`, `quantidade`, `ean`, `grupo` (category), `subgruponome`
+  (subcategory), `descricaotarja` (regulatory drug classification),
+  `pesokg`). `sku` and the main image (`mediaGallery[0].file`) come from
+  top-level `productData` fields.
 - **No marketplace seller text.** Drogasil sells directly (`is3p: false` on
   most items); `sold_by` is "Drogasil" unless a product is flagged as
   third-party.
@@ -44,6 +47,6 @@ for Nivea; a different brand may sit under a different category.
 in this README.
 
 ```csv
-search_term,title,sold_by,brand,manufacturer,quantity,regular_price,sale_price,pix_price,rating,review_count,url
-Nivea,Creme Facial EXEMPLO Antissinais Q10 Power Dia 50g,Drogasil,Nivea,Beiersdorf,50g,58.99,49.55,,4.7,36,https://www.drogasil.com.br/exemplo-produto.html
+search_term,title,sold_by,brand,manufacturer,quantity,ean,sku,category,subcategory,tarja,weight_kg,image_url,regular_price,sale_price,pix_price,rating,review_count,url
+Nivea,Creme Facial EXEMPLO Antissinais Q10 Power Dia 50g,Drogasil,Nivea,Beiersdorf,50g,4005808812875,26113,PERFUMARIA,BELEZA,PRODUTO SEM TARJA,0.1111,https://product-data.raiadrogasil.io/images/exemplo.webp,58.99,49.55,,4.7,36,https://www.drogasil.com.br/exemplo-produto.html
 ```
