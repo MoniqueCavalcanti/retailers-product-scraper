@@ -3,7 +3,7 @@ import json
 import scrapy
 from scrapy_playwright.page import PageMethod
 
-from magazineluiza.items import ProductItem
+from items import ProductItem
 
 WAIT_NEXT_DATA = PageMethod(
     "wait_for_selector", "script#__NEXT_DATA__", state="attached", timeout=20000

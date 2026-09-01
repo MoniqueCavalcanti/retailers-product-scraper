@@ -2,8 +2,8 @@ import os
 
 BOT_NAME = "magazineluiza"
 
-SPIDER_MODULES = ["magazineluiza.spiders"]
-NEWSPIDER_MODULE = "magazineluiza.spiders"
+SPIDER_MODULES = ["spiders"]
+NEWSPIDER_MODULE = "spiders"
 
 # robots.txt also returns a 403 from Akamai -- not a real disallow rule
 ROBOTSTXT_OBEY = False
