@@ -1,0 +1,5 @@
+scrapy
+scrapy-playwright
+
+# Optional: only needed if SCRAPER_BROWSER_ENGINE=camoufox.
+# camoufox

@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 
 data/
-outputs/*.csv
+**/outputs/*.csv
 docs/
 
 .env
