@@ -10,10 +10,7 @@ WAIT_NEXT_DATA = PageMethod(
     "wait_for_selector", "script#__NEXT_DATA__", state="attached", timeout=20000
 )
 
-# The star rating comes from a third-party widget (Vurdere) that injects its
-# own <script type="application/ld+json"> tag into the DOM after the page
-# settles -- it isn't part of Next.js's own __NEXT_DATA__. A scroll plus a
-# few seconds of wait reliably makes it appear (verified by hand first).
+# rating comes from Vurdere's widget (ld+json injected after load), not __NEXT_DATA__
 WAIT_PRODUCT = [
     WAIT_NEXT_DATA,
     PageMethod("evaluate", "window.scrollTo(0, document.body.scrollHeight / 2)"),

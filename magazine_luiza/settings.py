@@ -11,8 +11,7 @@ ROBOTSTXT_OBEY = False
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 4  # 2s consistently triggered a block after ~35 pages (~21 req/min)
 
-# Neither a 403 nor scrapy-playwright's own TimeoutError (a stuck page) are
-# retried by Scrapy's defaults, so a single blip permanently lost that item.
+# 403 and playwright's TimeoutError aren't retried by Scrapy's defaults
 from scrapy.settings.default_settings import RETRY_EXCEPTIONS as _DEFAULT_RETRY_EXCEPTIONS
 from scrapy.settings.default_settings import RETRY_HTTP_CODES as _DEFAULT_RETRY_HTTP_CODES
 
@@ -20,9 +19,7 @@ RETRY_TIMES = 3
 RETRY_HTTP_CODES = _DEFAULT_RETRY_HTTP_CODES + [403]
 RETRY_EXCEPTIONS = _DEFAULT_RETRY_EXCEPTIONS + ["playwright._impl._errors.TimeoutError"]
 
-# If Akamai is blocking the whole session, retries alone just burn time (up
-# to RETRY_TIMES attempts x 20s timeout per item). Stop the run instead of
-# grinding through every remaining item one by one.
+# stop the run instead of retrying every item if the whole session is blocked
 CLOSESPIDER_ERRORCOUNT = 10
 
 # Scrapy + Playwright: see README.md
@@ -45,8 +42,7 @@ if SCRAPER_BROWSER_ENGINE == "camoufox":
         humanize=True,
         os=["macos", "windows"],
         enable_cache=True,
-        # block_images=True was tried and dropped: Camoufox itself warns
-        # that blocking images is a known bot signal on major WAFs.
+        # not block_images=True -- Camoufox warns it's a bot signal on major WAFs
     )
     PLAYWRIGHT_CONTEXTS = {}
 else:

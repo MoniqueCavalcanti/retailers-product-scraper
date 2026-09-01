@@ -6,7 +6,6 @@ SPIDER_MODULES = ["spiders"]
 NEWSPIDER_MODULE = "spiders"
 
 # robots.txt also returns a 403 from Akamai -- not a real disallow rule
-# (same Akamai setup as the magazine_luiza project; see its README)
 ROBOTSTXT_OBEY = False
 
 CONCURRENT_REQUESTS_PER_DOMAIN = 1

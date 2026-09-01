@@ -16,8 +16,7 @@ def extract_next_data(response):
 
 
 def build_listing_request(term, page, callback):
-    # /marcas/ is the official brand catalog, already free of off-brand
-    # items (unlike /busca/, which ranks by relevance)
+    # /marcas/ is the official catalog (vs. /busca/, which ranks by relevance)
     url = f"https://www.magazineluiza.com.br/marcas/{term}/"
     if page > 1:
         url += f"?page={page}"
