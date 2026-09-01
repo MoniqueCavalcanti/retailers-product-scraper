@@ -65,13 +65,14 @@ class BrandSpider(scrapy.Spider):
     name = "brand"
     allowed_domains = ["magazineluiza.com.br"]
 
-    def __init__(self, term="nivea", max_pages="1", *args, **kwargs):
+    def __init__(self, term="nivea", start_page="1", max_pages="1", *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.term = term
+        self.start_page = int(start_page)
         self.max_pages = int(max_pages)
 
     async def start(self):
-        yield build_listing_request(self.term, page=1, callback=self.parse_listing)
+        yield build_listing_request(self.term, page=self.start_page, callback=self.parse_listing)
 
     def parse_listing(self, response, page):
         data = extract_next_data(response)
