@@ -11,7 +11,7 @@ ROBOTSTXT_OBEY = False
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 2
 
-# Scrapy + Playwright: ver README.md e docs/PLAYWRIGHT_SCRAPY_GUIA.md
+# Scrapy + Playwright: ver README.md
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",

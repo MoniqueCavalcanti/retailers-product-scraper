@@ -5,9 +5,7 @@
 A Scrapy project that will collect rated (star-reviewed) products from
 Magazine Luiza search results — starting with the Nivea catalog — into a CSV
 file. This document records the anti-bot investigation that shaped the
-project's architecture and what was changed as a result. A deeper,
-step-by-step technical guide to the Scrapy↔Playwright integration is in
-[`docs/PLAYWRIGHT_SCRAPY_GUIA.md`](docs/PLAYWRIGHT_SCRAPY_GUIA.md) (Portuguese).
+project's architecture and what was changed as a result.
 
 Status: **work in progress**. Search-result parsing, the star/brand filter,
 pagination, product-detail parsing and CSV export are built and tested
@@ -21,7 +19,7 @@ immediately, before any page logic runs. Even `robots.txt` returns the same
 block. This meant Scrapy could not talk to the site on its own; every request
 needed to go through a real browser engine.
 
-## What we tried and what actually mattered
+## What I tried and what actually mattered
 
 | Attempt | Result |
 | --- | --- |
@@ -91,9 +89,7 @@ The two only meet at one point: a `scrapy.Request` with
 `meta={"playwright": True, "playwright_page_methods": [...]}`. Everything
 before that dict is built with plain Scrapy/Python; everything after the
 `Response` comes back is plain Scrapy/Python again — no Playwright call
-happens inside a spider callback. See
-[`docs/PLAYWRIGHT_SCRAPY_GUIA.md`](docs/PLAYWRIGHT_SCRAPY_GUIA.md) for the
-full breakdown.
+happens inside a spider callback.
 
 | | Owns |
 | --- | --- |
@@ -133,13 +129,6 @@ termo_busca,titulo,vendido_por,preco_normal,preco_pix,estrelas,avaliacoes,marca,
 nivea,EXAMPLE Nivea Moisturizing Cream 200ml,Sold by Example Store and delivered by Magalu,29.9,26.9,4.8,120,Nivea,0000000000000,Moisturizing,Example 200ml,1 unit,https://www.magazineluiza.com.br/example-product/p/example123/
 ```
 
-## Responsible use
-
-Automated access may be restricted by Magazine Luiza's terms and technical
-controls. Keep conservative request intervals (`DOWNLOAD_DELAY`,
-`CONCURRENT_REQUESTS_PER_DOMAIN = 1`, already set in `settings.py`) and stop
-if the site starts blocking again.
-
 ---
 
 # Português
@@ -147,9 +136,7 @@ if the site starts blocking again.
 Projeto Scrapy que vai coletar produtos com avaliação (estrelas) dos
 resultados de busca do Magazine Luiza — começando pelo catálogo da Nivea —
 para um arquivo CSV. Este documento registra a investigação sobre o bloqueio
-anti-bot que definiu a arquitetura do projeto e o que precisou ser mudado. Um
-guia técnico mais profundo, passo a passo, da integração Scrapy↔Playwright
-está em [`docs/PLAYWRIGHT_SCRAPY_GUIA.md`](docs/PLAYWRIGHT_SCRAPY_GUIA.md).
+anti-bot que definiu a arquitetura do projeto e o que precisou ser mudado.
 
 Status: **em andamento**. Parsing dos resultados de busca, filtro de
 estrela/marca, paginação, parsing da página de produto e exportação em CSV
@@ -163,7 +150,7 @@ imediatamente, antes de qualquer lógica de página rodar. Até o `robots.txt`
 recebe o mesmo bloqueio. Ou seja, o Scrapy sozinho não conseguia falar com o
 site; toda requisição precisava passar por um navegador de verdade.
 
-## O que tentamos e o que realmente importou
+## O que eu tentei e o que realmente importou
 
 | Tentativa | Resultado |
 | --- | --- |
@@ -233,8 +220,7 @@ Os dois só se encontram em um ponto: um `scrapy.Request` com
 `meta={"playwright": True, "playwright_page_methods": [...]}`. Tudo antes
 desse dict é Scrapy/Python puro; tudo depois que o `Response` volta também é
 Scrapy/Python puro de novo — nenhuma chamada de Playwright acontece dentro de
-um callback do spider. O detalhe completo, linha por linha do código, está em
-[`docs/PLAYWRIGHT_SCRAPY_GUIA.md`](docs/PLAYWRIGHT_SCRAPY_GUIA.md).
+um callback do spider.
 
 | | Responsável por |
 | --- | --- |
@@ -275,10 +261,3 @@ coleta real):
 termo_busca,titulo,vendido_por,preco_normal,preco_pix,estrelas,avaliacoes,marca,referencia,linha,modelo,quantidade,url
 nivea,Creme Hidratante Nivea EXEMPLO 200ml,Vendido por Loja Exemplo e entregue por Magalu,29.9,26.9,4.8,120,Nivea,0000000000000,Hidratante,Exemplo 200ml,1 unidade,https://www.magazineluiza.com.br/produto-exemplo/p/exemplo123/
 ```
-
-## Uso responsável
-
-O acesso automatizado pode ser restringido pelos termos e controles técnicos
-do Magazine Luiza. Mantenha intervalos conservadores de requisição
-(`DOWNLOAD_DELAY`, `CONCURRENT_REQUESTS_PER_DOMAIN = 1`, já configurados em
-`settings.py`) e pare se o site voltar a bloquear.
